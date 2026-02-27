@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animasi Puzzle Love</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #111, #2b0000);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      margin-top: 20px;
+    }
+
+    #container {
+      position: relative;
+      width: 320px;
+      height: 300px;
+      margin: 40px auto;
+    }
+
+    .piece {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      opacity: 0;
+      transform: scale(0.3) rotate(-180deg);
+      transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .show {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      margin: 5px;
+      background: crimson;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: darkred;
+      transform: scale(1.05);
+    }
+
+    #message {
+      margin-top: 20px;
+      font-size: 24px;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    #message.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <h1>Puzzle Love Animation ❤️</h1>
+
+  <button onclick="startAnimation()">Mulai</button>
+  <button onclick="resetAnimation()">Reset</button>
+
+  <div id="container">
+    <div class="piece" id="p1"></div>
+    <div class="piece" id="p2"></div>
+    <div class="piece" id="p3"></div>
+    <div class="piece" id="p4"></div>
+    <div class="piece" id="p5"></div>
+    <div class="piece" id="p6"></div>
+    <div class="piece" id="p7"></div>
+    <div class="piece" id="p8"></div>
+    <div class="piece" id="p9"></div>
+    <div class="piece" id="p10"></div>
+  </div>
+
+  <div id="message">Love Complete ❤️</div>
+
+  <audio id="sound" src="https://www.soundjay.com/buttons/sounds/button-09.mp3"></audio>
+
+  <script>
+    const pieces = [
+      { id: "p1", x: 70, y: 40 },
+      { id: "p2", x: 140, y: 40 },
+      { id: "p3", x: 210, y: 40 },
+      { id: "p4", x: 50, y: 100 },
+      { id: "p5", x: 110, y: 100 },
+      { id: "p6", x: 170, y: 100 },
+      { id: "p7", x: 230, y: 100 },
+      { id: "p8", x: 90, y: 170 },
+      { id: "p9", x: 150, y: 170 },
+      { id: "p10", x: 120, y: 230 }
+    ];
+
+    // Gunakan gambar puzzle online
+    pieces.forEach((p, i) => {
+      const el = document.getElementById(p.id);
+      el.style.backgroundImage =
+        "url('https://cdn-icons-png.flaticon.com/512/103/103085.png')";
+    });
+
+    function startAnimation() {
+      resetAnimation();
+
+      pieces.forEach((pos, index) => {
+        setTimeout(() => {
+          const el = document.getElementById(pos.id);
+
+          // Mulai dari posisi acak
+          el.style.left = Math.random() * 300 + "px";
+          el.style.top = Math.random() * 300 + "px";
+          el.classList.add("show");
+
+          // Bergerak ke posisi heart
+          setTimeout(() => {
+            el.style.left = pos.x + "px";
+            el.style.top = pos.y + "px";
+          }, 100);
+
+          // Jika terakhir
+          if (index === pieces.length - 1) {
+            setTimeout(() => {
+              document.getElementById("sound").play();
+              document.getElementById("message").classList.add("show");
+            }, 1200);
+          }
+        }, index * 300);
+      });
+    }
+
+    function resetAnimation() {
+      document.getElementById("message").classList.remove("show");
+
+      pieces.forEach((pos) => {
+        const el = document.getElementById(pos.id);
+        el.classList.remove("show");
+        el.style.left = "0px";
+        el.style.top = "0px";
+      });
+    }
+  </script>
+</body>
+</html>
